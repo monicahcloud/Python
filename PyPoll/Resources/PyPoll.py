@@ -1,63 +1,58 @@
 import os
 import csv
-#Iterate
-candidates = []
-number_votes = 0
-vote_counts = []
-election_data = ['1', '2']
 
-#Data path is to election data called [election_data.csv](PyRoll/Resources/election_data.csv).
+candidates = []
+votes = 0
+votecount = []
+polldata = ['1', '2']
+
+
 # Start For Loop through file
-for files in election_data:
+for files in polldata:
     pypoll = csvpath = os.path.join("PyPoll CSV.csv")
       
-#Split the data on commas since that is your delimiter
     with open(pypoll) as pypollfile:
        pypollreader = csv.reader(pypollfile, delimiter=',')
        line = next(pypollreader,None)
-        # Using Nested For Loop
+       
        for line in pypollreader:        
-
-            #Establish vote count
-            number_votes = number_votes +1
-            
-            # Establish Candidate
+            votes = votes +1
             candidate = line[2]
           
-            # add votes to candidate running total. HA a pun.
+            # add votes to candidate running total.
             if candidate in candidates:
                 candidate_index = candidates.index(candidate)
-                vote_counts[candidate_index] = vote_counts[candidate_index] + 1
+                votecount[candidate_index] = votecount[candidate_index] + 1
 
-                # Make new spot for candidate in list
+            
             else:
                 candidates.append(candidate)
-                vote_counts.append(1)
+                votecount.append(1)
                
     #Declare the other variables:
     percentages = []
-    max_votes = vote_counts[0]
+    max_votes = votecount[0]
     max_index = 0
     
     #Work out percentages and winner (in a For Loop)
     for count in range(len(candidates)):
-        vote_percentage = vote_counts[count]/number_votes*100
+        vote_percentage = votecount[count]/votes*100
         percentages.append(vote_percentage)
-        if vote_counts[count] > max_votes:
-            max_votes = vote_counts[count]
+        if votecount[count] > max_votes:
+            max_votes = votecount[count]
             print(max_votes)
             max_index = count
     winner = candidates[max_index]
    
     percentages = [round(i,2) for i in percentages]
     
-    # Summary print test of election results
+   
     print("Election Results")
     print("--------------------------")
-    print(f"Total Votes: {number_votes}")
+    print(f"Total Votes: {votes}")
     print("--------------------------")
     for count in range(len(candidates)):
-        print(f"{candidates[count]}: {percentages[count]}% ({vote_counts[count]})")
+        print(f"{candidates[count]}: {percentages[count]}% ({votecount[count]})")
     print("--------------------------")
     print(f"Winner:  {winner}")
     print("--------------------------")
@@ -70,10 +65,10 @@ for files in election_data:
     # Write results to export text file
     filewriter.write("Election Results\n")
     filewriter.write("-----------------------------\n")
-    filewriter.write(f"Total Votes:  {number_votes}\n")
+    filewriter.write(f"Total Votes:  {votes}\n")
     filewriter.write("-----------------------------\n")
     for count in range(len(candidates)):
-        filewriter.write(f"{candidates[count]}: {percentages[count]}% ({vote_counts[count]})\n")
+        filewriter.write(f"{candidates[count]}: {percentages[count]}% ({votecount[count]})\n")
     filewriter.write("-----------------------------\n")
     filewriter.write(f"Winner:  {winner}\n")
     filewriter.write("-----------------------------\n")
